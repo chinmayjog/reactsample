@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import DropDownComponent from './../selectcomponent/dropdoencomponent';
-import TableComponent from './../tablecomponent/tablecomponent'
+import TableGridComponent from './../datagridcomponent/tablecomponent';
 import {Categories, Manufacturers} from './.././../mdoels/constants';
 import { Logic} from './../../mdoels/logic';
 class ProductFormComponent extends Component {
@@ -14,7 +14,15 @@ class ProductFormComponent extends Component {
             Price: 0,
             categories: Categories,
             manufacturers: Manufacturers,
-            products: []
+            products: [{ProductId:1, ProductName: 'Laptop', CategoryName: 'Electroics', Manufacturer: 'HP', Price:200000},
+            {ProductId:2, ProductName: 'Iron', CategoryName: 'Electrical', Manufacturer: 'Bajaj', Price:2000},
+            {ProductId:3, ProductName: 'Biscuts', CategoryName: 'Food', Manufacturer: 'Parle', Price:20},
+            {ProductId:4, ProductName: 'Router', CategoryName: 'Electroics', Manufacturer: 'IBM', Price:5000},
+            {ProductId:5, ProductName: 'Mixer', CategoryName: 'Electrical', Manufacturer: 'TATA', Price:2000},
+            {ProductId:6, ProductName: 'Las', CategoryName: 'Food', Manufacturer: 'Parle', Price:1000}],
+            manufacturersData:[
+                {Id:1001, Name: 'Microsoft'}, {Id:102,Name:'Oracle'}
+            ]
 
         };
         this.logic = new Logic();
@@ -40,6 +48,13 @@ class ProductFormComponent extends Component {
     getManufacturer=(val)=> {
         this.setState({Manufacturer: val}, ()=>{});
     }
+    getSelectedRow=(prd)=>{
+        this.setState({ProductId:prd.ProductId});
+        this.setState({ProductName:prd.ProductName});
+        this.setState({CategoryName:prd.CategoryName});
+        this.setState({Manufacturer:prd.Manufacturer});
+        this.setState({Price:prd.Price});
+    }
     save=()=> {
         
         let prd = {
@@ -56,7 +71,7 @@ class ProductFormComponent extends Component {
         tempProduct.push(prd);
         // update the products state
         this.setState({products: tempProduct}, ()=>{}); 
-        
+        alert(JSON.stringify(this.state.products));
     }
     render() { 
         return (
@@ -65,7 +80,7 @@ class ProductFormComponent extends Component {
                     <div className="form-group">
                         <label>Product Id</label>
                         <input type="text" className="form-control" value={this.state.ProductId}
-                        name="ProductId" 
+                        name="ProductId"  required={true}
                         onChange={this.handleChange.bind(this)}/>
                     </div>
                     <div className="form-group">
@@ -120,7 +135,11 @@ class ProductFormComponent extends Component {
                     </div>
                 </form>
                 <br/>
-                <TableComponent dataSource={this.state.products}></TableComponent>
+                <TableGridComponent dataSource={this.state.products}
+                 selectRow={this.getSelectedRow.bind(this)}
+                  canDeleteRow={true}></TableGridComponent>     
+                 <br/>
+                 <TableGridComponent dataSource={this.state.manufacturersData}></TableGridComponent>   
                 {/* <table className="table table-bordered table-striped">
                     <thead>
                         <tr>

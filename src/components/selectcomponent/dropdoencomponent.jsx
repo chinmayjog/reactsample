@@ -16,6 +16,7 @@ class DropDownComponent extends Component {
             <div className="container">
                 <select className="form-control" value={this.props.data}
                  onChange={this.handleChange.bind(this)}>
+                     <option>Select Value</option>
                     {
                         this.props.dataSource.map((v,i)=> (
                         <option key={i} value={v}>{v}</option>
